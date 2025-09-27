@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "tsc && node dist/server.js"
+    "dev": "tsc && node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,9 +19,11 @@
   "homepage": "https://github.com/akash-indulkar/inventory-management-system-api#readme",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "@types/cors": "^2.8.19",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
