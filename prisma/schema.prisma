@@ -17,16 +17,17 @@ model Admin {
 }
 
 model Product {
-  id            String   @id @default(uuid())
-  name          String
-  description   String?
-  stockQuantity Int      @default(0)
-  price         Float
-  category      String?
-  supplier      Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId    String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String   @id @default(uuid())
+  name              String   @unique
+  description       String?
+  stockQuantity     Int      @default(0)
+  lowStockThreshold Int?   
+  price             Float
+  category          String?
+  supplier          Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model Supplier {

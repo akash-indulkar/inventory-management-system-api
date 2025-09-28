@@ -5,7 +5,7 @@ import * as adminService from "../services/admin.service";
 export async function signupAdmin(req: Request, res: Response) {
     try {
         const data: AdminSignupInput = req.body;
-        const admin = await adminService.signupAdmin(data);
+        await adminService.signupAdmin(data);
         res.status(201).json({message : "Signup otp sent to your email"});
     } catch (err: any) {
         res.status(400).json({ error: err.message });
