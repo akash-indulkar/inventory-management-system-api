@@ -23,18 +23,18 @@ export async function signupAdmin(data: AdminSignupInput): Promise<string> {
     await redisClient.set(`admin:signup:otp:${data.email}`, otp, "EX", 300);
     await redisClient.set(`admin:signup:name:${data.email}`, data.name, "EX", 300);
     await redisClient.set(`admin:signup:password:${data.email}`, hashedPassword, "EX", 300);
-   
+
     await sendEmail(
-    data.email,
-    "Your Signup OTP",
-    `Your OTP for signup is: ${otp}`,
-    `<p>Your OTP for signup is: <b>${otp}</b></p>`
+        data.email,
+        "Your Signup OTP",
+        `Your OTP for signup is: ${otp}`,
+        `<p>Your OTP for signup is: <b>${otp}</b></p>`
     );
 
     return "Signup OTP sent to email";
 }
 
-export async function createAdmin(data: AdminSignupVerifyInput): Promise<AdminResponseDTO> {
+export async function createAdmin(data: AdminSignupVerifyInput): Promise<{ data: AdminResponseDTO, token: string }> {
     const cachedOtp = await redisClient.get(`admin:signup:otp:${data.email}`);
     if (!cachedOtp || cachedOtp !== data.otp) throw new Error("Invalid or expired OTP");
     const name = await redisClient.get(`admin:signup:name:${data.email}`);
@@ -53,12 +53,17 @@ export async function createAdmin(data: AdminSignupVerifyInput): Promise<AdminRe
     await redisClient.del(`admin:signup:name:${data.email}`);
     await redisClient.del(`admin:signup:password:${data.email}`);
 
+    const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1d" });
+
     return {
-        id: admin.id,
-        name: admin.name,
-        email: admin.email,
-        createdAt: admin.createdAt,
-        updatedAt: admin.updatedAt,
+        data: {
+            id: admin.id,
+            name: admin.name,
+            email: admin.email,
+            createdAt: admin.createdAt,
+            updatedAt: admin.updatedAt
+        },
+        token
     };
 }
 
@@ -91,10 +96,10 @@ export async function requestPasswordReset(email: string): Promise<string> {
     await redisClient.set(`admin:reset:otp:${email}`, otp, "EX", 300);
 
     await sendEmail(
-    email,
-    "Your Password Reset OTP",
-    `Your OTP for signup is: ${otp}`,
-    `<p>Your OTP for signup is: <b>${otp}</b></p>`
+        email,
+        "Your Password Reset OTP",
+        `Your OTP for signup is: ${otp}`,
+        `<p>Your OTP for signup is: <b>${otp}</b></p>`
     )
     return "Password Reset OTP sent to email";
 }
