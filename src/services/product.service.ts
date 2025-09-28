@@ -1,6 +1,6 @@
 import prisma from "../config/db";
 import { ProductResponseDTO } from "../DTO/Product.dto";
-import { Product } from "../generated/prisma";
+import { toProductDTO, toProductDTOs } from "../utils/mapper/product.mapper";
 import { ProductInput, UpdateProductInput } from "../validators/product.schema";
 
 export async function addProduct(data: ProductInput): Promise<ProductResponseDTO> {
@@ -18,18 +18,7 @@ export async function addProduct(data: ProductInput): Promise<ProductResponseDTO
             supplierId: data.supplierId
         }
     });
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        supplierId: product.supplierId,
-        stockQuantity: product.stockQuantity,
-        lowStockThreshold: product.lowStockThreshold,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-    };
+    return toProductDTO(product);
 }
 
 export async function deleteProduct(id: string): Promise<string> {
@@ -52,18 +41,7 @@ export async function updateProduct(id: string, data: UpdateProductInput): Promi
         where: { id },
         data: cleanData
     });
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        supplierId: product.supplierId,
-        stockQuantity: product.stockQuantity,
-        lowStockThreshold: product.lowStockThreshold,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-    };
+    return toProductDTO(product);
 }
 
 export async function increaseStock(id: string, quantity: number): Promise<ProductResponseDTO> {
@@ -73,18 +51,7 @@ export async function increaseStock(id: string, quantity: number): Promise<Produ
         where: { id },
         data: { stockQuantity: { increment: quantity } },
     });
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        supplierId: product.supplierId,
-        stockQuantity: product.stockQuantity,
-        lowStockThreshold: product.lowStockThreshold,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-    };
+    return toProductDTO(product);
 }
 
 export async function decreaseStock(id: string, quantity: number): Promise<ProductResponseDTO> {
@@ -95,18 +62,7 @@ export async function decreaseStock(id: string, quantity: number): Promise<Produ
         where: { id },
         data: { stockQuantity: { decrement: quantity } },
     });
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        supplierId: product.supplierId,
-        stockQuantity: product.stockQuantity,
-        lowStockThreshold: product.lowStockThreshold,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-    };
+    return toProductDTO(product);
 }
 
 export async function getAllProducts(page: number, limit: number, filters?: any): Promise<{ data: ProductResponseDTO[], total: number }> {
@@ -127,35 +83,12 @@ export async function getAllProducts(page: number, limit: number, filters?: any)
         prisma.product.count({ where }),
     ]);
 
-    const data: ProductResponseDTO[] = products.map((p: Product) => ({
-        id: p.id,
-        name: p.name,
-        description: p.description,
-        stockQuantity: p.stockQuantity,
-        lowStockThreshold: p.lowStockThreshold,
-        price: p.price,
-        category: p.category,
-        supplierId: p.supplierId,
-        createdAt: p.createdAt,
-        updatedAt: p.updatedAt,
-    }));
-
+    const data: ProductResponseDTO[] = toProductDTOs(products);
     return { data, total };
 }
 
 export async function getProductById(id: string): Promise<ProductResponseDTO> {
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) throw new Error("Product does not exist, please provide a valid ID!");
-    return {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        supplierId: product.supplierId,
-        stockQuantity: product.stockQuantity,
-        lowStockThreshold: product.lowStockThreshold,
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-    };
+    return toProductDTO(product);
 }

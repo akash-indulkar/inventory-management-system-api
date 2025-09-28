@@ -1,12 +1,13 @@
 import prisma from "../config/db";
 import { SupplierInput, UpdateSupplierInput } from "../validators/supplier.schema";
 import { SupplierResponseDTO } from "../DTO/Supplier.dto";
+import { toSupplierDTO, toSupplierDTOs } from "../utils/mapper/supplier.mapper";
 
 export async function addSupplier(data: SupplierInput): Promise<SupplierResponseDTO> {
   const existing = await prisma.supplier.findUnique({ where: { email: data.email } });
   if (existing) throw new Error("Supplier with this email already exists");
   const supplier = await prisma.supplier.create({ data });
-  return supplier;
+  return toSupplierDTO(supplier);
 }
 
 export async function deleteSupplier(id: string): Promise<string> {
@@ -22,8 +23,8 @@ export async function updateSupplier(id: string, data: UpdateSupplierInput): Pro
   const cleanData = Object.fromEntries(
     Object.entries(data).filter(([_, v]) => v !== undefined)
   );
-  const updated = await prisma.supplier.update({ where: { id }, data: cleanData });
-  return updated;
+  const updatedSupplier = await prisma.supplier.update({ where: { id }, data: cleanData });
+  return toSupplierDTO(updatedSupplier);
 }
 
 export async function getAllSuppliers(page: number, limit: number): Promise<{ data: SupplierResponseDTO[], total: number }> {
@@ -32,11 +33,11 @@ export async function getAllSuppliers(page: number, limit: number): Promise<{ da
     prisma.supplier.findMany({ skip, take: limit, orderBy: { createdAt: "desc" } }),
     prisma.supplier.count(),
   ]);
-  return { data: suppliers, total };
+  return { data: toSupplierDTOs(suppliers), total };
 }
 
 export async function getSupplierById(id: string): Promise<SupplierResponseDTO> {
   const supplier = await prisma.supplier.findUnique({ where: { id } });
   if (!supplier) throw new Error("Supplier not found");
-  return supplier;
+  return toSupplierDTO(supplier);
 }

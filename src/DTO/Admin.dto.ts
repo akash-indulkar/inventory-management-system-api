@@ -1,8 +1,5 @@
-
 export interface AdminResponseDTO {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

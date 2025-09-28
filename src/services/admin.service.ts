@@ -6,6 +6,7 @@ import { AdminLoginInput, AdminSignupInput, AdminSignupVerifyInput, PasswordRese
 import prisma from "../config/db";
 import { AdminResponseDTO } from "../DTO/Admin.dto";
 import { sendEmail } from "../config/mailer";
+import { toAdminResponseDTO } from "../utils/mapper/admin.mapper";
 
 export async function signupAdmin(data: AdminSignupInput): Promise<string> {
     const existingAdmin = await prisma.admin.findUnique({ where: { email: data.email } });
@@ -56,13 +57,7 @@ export async function createAdmin(data: AdminSignupVerifyInput): Promise<{ data:
     const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1d" });
 
     return {
-        data: {
-            id: admin.id,
-            name: admin.name,
-            email: admin.email,
-            createdAt: admin.createdAt,
-            updatedAt: admin.updatedAt
-        },
+        data: toAdminResponseDTO(admin),
         token
     };
 }
@@ -124,11 +119,5 @@ export async function getProfile(adminEmail: string): Promise<AdminResponseDTO> 
     const admin = await prisma.admin.findUnique({ where: { email: adminEmail } });
     if (!admin) throw new Error("Admin not found");
 
-    return {
-        id: admin.id,
-        name: admin.name,
-        email: admin.email,
-        createdAt: admin.createdAt,
-        updatedAt: admin.updatedAt,
-    };
+    return toAdminResponseDTO(admin);
 }
