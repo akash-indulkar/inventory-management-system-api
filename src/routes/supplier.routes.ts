@@ -8,7 +8,7 @@ const router = Router();
 
 router.post("/", validate(supplierSchema), authenticateJWT, supplierController.addSupplier);
 router.delete("/:id", authenticateJWT, supplierController.deleteSupplier);
-router.put("/:id", validate(supplierSchema), authenticateJWT, supplierController.updateSupplier);
+router.put("/:id", validate(updateSupplierSchema), authenticateJWT, supplierController.updateSupplier);
 router.get("/", authenticateJWT, supplierController.getAllSuppliers);
 router.get("/:id", authenticateJWT, supplierController.getSupplierById);
 

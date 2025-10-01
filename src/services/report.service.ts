@@ -1,7 +1,9 @@
-import prisma from "../config/db";
+import prisma from "../config/db.config";
 import { ProductResponseDTO } from "../DTO/Product.dto";
 import { SupplierResponseDTO } from "../DTO/Supplier.dto";
 import { Prisma, Product } from "../generated/prisma";
+import { toProductDTOs } from "../utils/mapper/product.mapper";
+import { toSupplierDTO } from "../utils/mapper/supplier.mapper";
 
 export async function getLowStockProducts(page: number, limit: number): Promise<{ data: ProductResponseDTO[], total: number }> {
     const allProducts = await prisma.product.findMany();
@@ -10,18 +12,7 @@ export async function getLowStockProducts(page: number, limit: number): Promise<
     const skip = (page - 1) * limit;
     const data = filtered.slice(skip, skip + limit);
     return {
-        data: data.map((p: Product) => ({
-            id: p.id,
-            name: p.name,
-            description: p.description,
-            stockQuantity: p.stockQuantity,
-            lowStockThreshold: p.lowStockThreshold,
-            price: p.price,
-            category: p.category,
-            supplierId: p.supplierId,
-            createdAt: p.createdAt,
-            updatedAt: p.updatedAt,
-        })), 
+        data: toProductDTOs(data), 
         total
     };
 }
@@ -32,26 +23,7 @@ export async function getProductsGroupedBySupplier(): Promise<{ supplier: Suppli
     });
 
     return suppliers.map((s: Prisma.SupplierGetPayload<{ include: { products: true } }>) => ({
-        supplier: {
-            id: s.id,
-            name: s.name,
-            email: s.email,
-            phone: s.phone,
-            address: s.address,
-            createdAt: s.createdAt,
-            updatedAt: s.updatedAt,
-        },
-        products: s.products.map((p: Product) => ({
-            id: p.id,
-            name: p.name,
-            description: p.description,
-            price: p.price,
-            category: p.category,
-            supplierId: p.supplierId,
-            stockQuantity: p.stockQuantity,
-            lowStockThreshold: p.lowStockThreshold,
-            createdAt: p.createdAt,
-            updatedAt: p.updatedAt,
-        })),
+        supplier: toSupplierDTO(s),
+        products: toProductDTOs(s.products),
     }));
 }

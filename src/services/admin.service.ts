@@ -1,11 +1,11 @@
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { redisClient } from "../config/redis";
+import { redisClient } from "../config/redis.config";
 import { AdminLoginInput, AdminSignupInput, AdminSignupVerifyInput, PasswordResetConfirmInput } from "../validators/admin.schema";
-import prisma from "../config/db";
+import prisma from "../config/db.config";
 import { AdminResponseDTO } from "../DTO/Admin.dto";
-import { sendEmail } from "../config/mailer";
+import { sendEmail } from "../config/mailer.config";
 import { toAdminResponseDTO } from "../utils/mapper/admin.mapper";
 
 export async function signupAdmin(data: AdminSignupInput): Promise<string> {

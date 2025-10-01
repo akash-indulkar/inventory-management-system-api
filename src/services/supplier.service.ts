@@ -1,4 +1,4 @@
-import prisma from "../config/db";
+import prisma from "../config/db.config";
 import { SupplierInput, UpdateSupplierInput } from "../validators/supplier.schema";
 import { SupplierResponseDTO } from "../DTO/Supplier.dto";
 import { toSupplierDTO, toSupplierDTOs } from "../utils/mapper/supplier.mapper";

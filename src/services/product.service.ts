@@ -1,4 +1,4 @@
-import prisma from "../config/db";
+import prisma from "../config/db.config";
 import { ProductResponseDTO } from "../DTO/Product.dto";
 import { toProductDTO, toProductDTOs } from "../utils/mapper/product.mapper";
 import { ProductInput, UpdateProductInput } from "../validators/product.schema";
