@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export async function sendEmail(to: string, subject: string, text: string, html?: string) {
   const info = await transporter.sendMail({
-    from: `"Inventory App" <${process.env.SMTP_USER}>`,
+    from: `"Inventory Management System" <${process.env.SMTP_USER}>`,
     to,
     subject,
     text,
