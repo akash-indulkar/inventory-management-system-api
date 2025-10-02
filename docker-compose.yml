@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Akash@6777
+      MYSQL_DATABASE: imsdb
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7
+    container_name: redis-cache
+    command: redis-server --requirepass Akash@2603
+    ports:
+      - "6379:6379"
+
+  app:
+    image: akashxdev/ims-api:v1
+    container_name: ims-api
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "3000:3000"
+    command: sh -c "npx prisma migrate deploy && node dist/server.js"
+    env_file:
+      - .env
