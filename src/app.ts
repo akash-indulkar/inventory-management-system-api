@@ -12,7 +12,7 @@ const app : Application = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/admins", adminRoutes);
+app.use("/admin", adminRoutes);
 app.use("/products", productRoutes);
 app.use("/supplier", supplierRoutes);
 app.use("/reports", reportRoutes);
