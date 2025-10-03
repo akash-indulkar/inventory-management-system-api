@@ -12,6 +12,10 @@ const testUser = { id: "123", email: "testadmin@example.com" };
 const jwtToken = `${jwt.sign(testUser, process.env.JWT_SECRET!, { expiresIn: "1h" })}`;
 
 describe("Report Routes", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it("GET /reports/stock - should return low stock products", async () => {
         const lowStockProducts = [
             {

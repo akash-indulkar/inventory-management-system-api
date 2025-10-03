@@ -112,7 +112,7 @@ describe("Supplier API Endpoints", () => {
       .set("Authorization", jwtToken);
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({data: suppliers, total: suppliers.length});
+    expect(res.body).toEqual({ data: suppliers, total: suppliers.length });
     expect(prisma.supplier.findMany).toHaveBeenCalled();
   });
 
