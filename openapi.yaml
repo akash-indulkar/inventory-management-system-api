@@ -1,0 +1,418 @@
+openapi: 3.0.0
+info:
+  title: IMS API
+  version: 1.0.0
+  description: ''
+servers:
+  - url: '{{base_url}}'
+paths:
+  /admin/signup:
+    parameters: []
+    post:
+      summary: sign up
+      tags: &ref_0
+        - Admin
+      parameters: []
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+            example:
+              name: Akash Indulkar
+              email: akashindulkar66@gmail.com
+              password: Akash@6777
+  /admin/password-reset/request:
+    parameters: []
+    post:
+      summary: password reset request
+      tags: *ref_0
+      parameters: []
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+            example:
+              email: akashindulkar66@gmail.com
+  /admin/password-reset/confirm:
+    parameters: []
+    post:
+      summary: password reset confirm
+      tags: *ref_0
+      parameters: []
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                otp:
+                  type: string
+                  format: color
+                newPassword:
+                  type: string
+            example:
+              email: akashindulkar66@gmail.com
+              otp: '883261'
+              newPassword: Akash@1210
+  /admin/login:
+    parameters: []
+    post:
+      summary: log in
+      tags: *ref_0
+      parameters: []
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+            example:
+              email: akashindulkar66@gmail.com
+              password: Akash@6777
+  /admin/profile:
+    parameters: []
+    get:
+      summary: profile
+      tags: *ref_0
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTEyMDIxMiwiZXhwIjoxNzU5MjA2NjEyfQ.N6F6rCBm9bKB6ZTLjfZVKC0lGmZDXrJNuG0yDviin1U
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+  /admin/signup/verify:
+    parameters: []
+    post:
+      summary: sign up otp verify
+      tags: *ref_0
+      parameters: []
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                otp:
+                  type: string
+                  format: color
+            example:
+              email: akashindulkar66@gmail.com
+              otp: '730966'
+  /products/:
+    parameters: []
+    post:
+      summary: Add a Product
+      tags: &ref_1
+        - Product
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcyZTE4OGU4LTQ2NGEtNDE4Ny04YzA3LTU0ZGJjZWIwNWI1NCIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTM4NzEyNiwiZXhwIjoxNzU5NDczNTI2fQ.ubYeGVFCQKvG1SllJ37Vmc4WM2jkAfpOJU-Kd1HgWU8
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              name: Colgate toothpaste
+              description: white
+              price: 100
+              category: Consumer
+              supplierId: e59cfaa5-5823-4458-b89c-ae19f692a760
+              stockQuantity: 10
+              lowStockThreshold: 3
+    get:
+      summary: Get all products
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcyZTE4OGU4LTQ2NGEtNDE4Ny04YzA3LTU0ZGJjZWIwNWI1NCIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTM4NzEyNiwiZXhwIjoxNzU5NDczNTI2fQ.ubYeGVFCQKvG1SllJ37Vmc4WM2jkAfpOJU-Kd1HgWU8
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+  /products/b1f807f9-5352-45fa-a1cd-e1fcdeb91dfb:
+    parameters: []
+    get:
+      summary: Get a product
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+    delete:
+      summary: Delete a product
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+  /products/322dbb14-3f61-433c-96e6-295dbbeda116:
+    parameters: []
+    put:
+      summary: Update a Product
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              name: Colgate Toothpaste
+              description: white
+  /products/322dbb14-3f61-433c-96e6-295dbbeda116/increase:
+    parameters: []
+    patch:
+      summary: Increase stock qty
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5Nzc1OCwiZXhwIjoxNzU5Mzg0MTU4fQ.uAFJC_hLv4WFMCnhOBMqC68Cs-1nbZnQ1EYLR4bHhjU
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              quantity: -4
+  /products/76b1b96a-5825-45e3-8d47-62aaf3d8c4bb/decrease:
+    parameters: []
+    patch:
+      summary: Decrease stock qty
+      tags: *ref_1
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcyZTE4OGU4LTQ2NGEtNDE4Ny04YzA3LTU0ZGJjZWIwNWI1NCIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTM4NzEyNiwiZXhwIjoxNzU5NDczNTI2fQ.ubYeGVFCQKvG1SllJ37Vmc4WM2jkAfpOJU-Kd1HgWU8
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              quantity: 8
+  /supplier/:
+    parameters: []
+    post:
+      summary: Add a Supplier
+      tags: &ref_2
+        - Supplier
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcyZTE4OGU4LTQ2NGEtNDE4Ny04YzA3LTU0ZGJjZWIwNWI1NCIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTM4NzEyNiwiZXhwIjoxNzU5NDczNTI2fQ.ubYeGVFCQKvG1SllJ37Vmc4WM2jkAfpOJU-Kd1HgWU8
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              name: Jopadevi Distributors
+              email: jopadevidistributors@gmail.com
+              phone: 21846 06421
+              address: Khalumbre, Pune
+    get:
+      summary: Get all suppliers
+      tags: *ref_2
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+  /supplier/c9e4b2b8-9dcd-421b-8ad4-6b219c27ebc8:
+    parameters: []
+    get:
+      summary: Get a supplier
+      tags: *ref_2
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+    delete:
+      summary: Delete supplier
+      tags: *ref_2
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example: {}
+    put:
+      summary: Update supplier
+      tags: *ref_2
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+            example:
+              name: Vijay sales
+  /reports/stock:
+    parameters: []
+    get:
+      summary: Get low stock products
+      tags: &ref_3
+        - Reports
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcyZTE4OGU4LTQ2NGEtNDE4Ny04YzA3LTU0ZGJjZWIwNWI1NCIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTM4NzEyNiwiZXhwIjoxNzU5NDczNTI2fQ.ubYeGVFCQKvG1SllJ37Vmc4WM2jkAfpOJU-Kd1HgWU8
+          schema:
+            type: string
+      responses: {}
+  /reports/suppliers:
+    parameters: []
+    get:
+      summary: Get products grouped by supplier
+      tags: *ref_3
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY2MDcxYTljLWVlNDctNGE3OS1hNGI3LTA0MDVjOWE3ZTZmMyIsImVtYWlsIjoiYWthc2hpbmR1bGthcjY2QGdtYWlsLmNvbSIsImlhdCI6MTc1OTI5MzE1OCwiZXhwIjoxNzU5Mzc5NTU4fQ.w8wUvIwipso9WGNkH_qVOdg1UPu0jBVjcyQFKmQenvA
+          schema:
+            deprecated: false
+      responses: {}
