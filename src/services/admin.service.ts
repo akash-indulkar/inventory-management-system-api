@@ -1,4 +1,3 @@
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { redisClient } from "../config/redis.config";
@@ -24,14 +23,12 @@ export async function signupAdmin(data: AdminSignupInput): Promise<string> {
     await redisClient.set(`admin:signup:otp:${data.email}`, otp, "EX", 300);
     await redisClient.set(`admin:signup:name:${data.email}`, data.name, "EX", 300);
     await redisClient.set(`admin:signup:password:${data.email}`, hashedPassword, "EX", 300);
-
     await sendEmail(
         data.email,
         "Your Signup OTP",
         `Your OTP for signup is: ${otp}`,
         `<p>Your OTP for signup is: <b>${otp}</b></p>`
     );
-
     return "Signup OTP sent to email";
 }
 
@@ -41,7 +38,6 @@ export async function createAdmin(data: AdminSignupVerifyInput): Promise<{ data:
     const name = await redisClient.get(`admin:signup:name:${data.email}`);
     const password = await redisClient.get(`admin:signup:password:${data.email}`);
     if (!name || !password) throw new Error("Signup data expired. Please try again.");
-
     const admin = await prisma.admin.create({
         data: {
             name: name,
@@ -49,13 +45,10 @@ export async function createAdmin(data: AdminSignupVerifyInput): Promise<{ data:
             password: password,
         },
     });
-
     await redisClient.del(`admin:signup:otp:${data.email}`);
     await redisClient.del(`admin:signup:name:${data.email}`);
     await redisClient.del(`admin:signup:password:${data.email}`);
-
-    const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1d" });
-
+    const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1h" });
     return {
         data: toAdminResponseDTO(admin),
         token
@@ -69,7 +62,7 @@ export async function loginAdmin(data: AdminLoginInput): Promise<string> {
     const isValid = await bcrypt.compare(data.password, admin.password);
     if (!isValid) throw new Error("Invalid credentials");
 
-    const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1d" });
+    const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET!, { expiresIn: "1h" });
     return token;
 }
 
